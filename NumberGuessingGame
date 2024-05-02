@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+#include <array>
+#include <ctime>    // For time()
+#include <cstdlib>  // For srand() and rand()
+#include <string>
+using namespace std;
+
+int main() {
+    srand(time(nullptr));  // Seed the random number generator
+
+    bool playAgain = true;
+    int random;
+    int userGuess;
+    bool correctGuess = false;
+    int Trials = 0; 
+    int FarGuess;
+    int LowGuess;
+    //CHANGE ADJECTIVES 
+    std::string  Congrats [4] = { "superb!", "phenomenal!", "terrific!", "That's marvelous!" };     
+    std::string  close [4] = { "Almost There champ!", "Too cLose hehe ", "Close call!", "You're within striking distance!" };     
+
+    while (playAgain) {
+        // Generate a random index to select a colour from the array
+
+        int i = rand() % 4;
+
+        random = (rand() % 100) + 1;  // Generate a new random number for each game
+        FarGuess = random + 5; 
+        LowGuess = random - 5;
+        correctGuess = false; // Reset correctGuess flag for each new game
+        Trials = 0; // Reset trial count for each new game
+
+        while (!correctGuess) {
+            Trials++;
+
+            cout << "What number do you think I have? 🤖 ";
+            cin >> userGuess;
+
+            // Check if the user wants to quit
+            if (userGuess == 0) {
+                playAgain = false;
+                break;
+            }
+
+            if (userGuess == random) {
+                if (Trials == 1) {
+                    cout << endl;
+
+                    cout << "That's " << Congrats[i] << endl;
+                    cout << "Number of trials: " << Trials << endl;
+                    correctGuess = true;
+                } else {
+                    cout << "Finally ... correct! " << endl;
+                    cout << "Number of trials: " << Trials << endl;
+
+                    correctGuess = true;
+                }
+            } else if (userGuess > FarGuess) {
+                cout << "Your guess is too Far. Try a lower number." << endl;
+				i = rand() % 4;
+            } else if (userGuess < LowGuess) {
+                cout << "Your guess is too low. Try a higher number." << endl;
+				i = rand() % 4;
+            } else {
+                if (userGuess < random) {
+                    cout << close[i] << " Maybe a bit higher?" << endl;
+					i = rand() % 4;
+                } else {
+                    cout << close[i] << " Tiny bit lower." << endl;
+					i = rand() % 4;
+                }
+            }
+        }
+
+        if (!playAgain) {
+            break;
+        }
+
+        cout << "Enter 0 to quit or any other number to play again: ";
+        int userChoice;
+        cin >> userChoice;
+        if (userChoice == 0) {
+            playAgain = false;
+        }
+    }
+
+    return 0;
+}
